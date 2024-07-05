@@ -13,11 +13,11 @@ export const Search = () => {
         borderRadius: 20,
         flexDirection: "row",
         alignItems: "center",
-        paddingLeft: 5,
+        justifyContent:"center"
       }}
     >
       <Ionicons size={24} name="search" />
-      <TextInput placeholder="Search" style={{ width: 300, height: "100%" }} />
+      <TextInput placeholder="Search" style={{ width: 300, height: "100%",padding:4 }} />
     </View>
   );
 };
