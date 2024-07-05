@@ -1,7 +1,9 @@
 import { Tabs } from "expo-router";
 import React from "react";
 import { Text } from "react-native";
-
+import { Icon } from "react-native-vector-icons/Icon";
+import { Ionicons } from "@expo/vector-icons";
+import { TabBarIcon } from "@/components/TabbarIcon";
 export default function TabLayout() {
   return (
     <Tabs>
@@ -9,14 +11,12 @@ export default function TabLayout() {
         name="index"
         options={{
           title: "Home",
-        }}
-      />
-      <Tabs.Screen
-        name="anime/[slug]"
-        options={{
-          title: "Anime",
-          header: () => (
-            <Text style={{ height: 20, backgroundColor: "green" }}>hello</Text>
+          headerShown: false,
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon
+              name={focused ? "home" : "home-outline"}
+              color={color}
+            />
           ),
         }}
       />
