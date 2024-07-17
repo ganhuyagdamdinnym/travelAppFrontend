@@ -15,6 +15,7 @@ import { Location } from "../_components/Location";
 import { Search } from "../_components/Search";
 import { PopularNearby } from "../_components/PopularNearby";
 import { useProduct } from "@/context/AllProductProvider";
+import { Recommended } from "../_components/Recommended";
 // const push = async () => {
 //   router.replace("/login");
 // };
@@ -23,6 +24,7 @@ import { useProduct } from "@/context/AllProductProvider";
 // }, []);
 export default function HomeScreen() {
   const { products, loading, error, refetch } = useProduct();
+
   return (
     <View style={homeStyle.bodyProvider}>
       <View style={homeStyle.locationAndSettingsParents}>
@@ -35,10 +37,12 @@ export default function HomeScreen() {
         >
           <Location />
           <NotiAndSeti />
-        </View> 
+        </View>
         <Search />
       </View>
-      {products && products.length >0 && <PopularNearby products={products} />}
+
+      <PopularNearby products={products} />
+      <Recommended />
     </View>
   );
 }

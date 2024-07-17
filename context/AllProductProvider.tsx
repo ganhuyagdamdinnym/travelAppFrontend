@@ -55,6 +55,7 @@ const ProductProvider = ({ children }: Props) => {
   const { loading, data, error, refetch } = useGetAllTravelQuery();
   const [products, setProducts] = useState<ProductType[]>([]);
   console.log("data", data?.getAllTravel);
+
   useEffect(() => {
     if (data && data.getAllTravel) {
       setProducts(data.getAllTravel);

@@ -1,17 +1,46 @@
 import { View, Text, Image, ScrollView } from "react-native";
 import { useProduct } from "../../context/AllProductProvider";
 import { Link } from "expo-router";
+// import { Linking } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useGetAllTravelQuery } from "@/generated";
+type RunDown = {
+  title: string;
+  description: string;
+};
 
-export const PopularNearby = ({products}:any) => {
+type InfoType = {
+  runDown: Array<RunDown>;
+  note: string;
+};
+type ProductType = {
+  __typename?: string;
+  _id: string;
+  name: string;
+  description: string | null;
+  imageUrl: string;
+  duration: string;
+  endAt: string;
+  facilities?: Array<string> | null;
+  location: string;
+  price: number;
+  rating: number | null;
+  startAt: string;
+  information?: InfoType;
+};
 
-  console.log("dtatssWE", products);
-  if(!products || products.length < 1){
-    return <View><Text>Loading</Text>
-    <Text>{products.toLocaleString()}</Text></View>
+export const PopularNearby = ({ products }: { products: ProductType[] }) => {
+  if (!products || products.length < 1) {
+    console.log(products);
+    return (
+      <View>
+        <Text>Loading</Text>
+        <Text>{products.toLocaleString()}</Text>
+      </View>
+    );
   }
   return (
-    <View style={{ width: "100%", height: 330, marginLeft: 40, }}>
+    <View style={{ width: "100%", height: 330, marginLeft: 40 }}>
       <View
         style={{
           width: "90%",
@@ -35,8 +64,15 @@ export const PopularNearby = ({products}:any) => {
           See all
         </Text>
       </View>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        <View style={{ flexDirection: "row", gap: 20, width: 400,paddingRight:20 }}>
+      <ScrollView horizontal={true}>
+        <View
+          style={{
+            flexDirection: "row",
+            gap: 20,
+            width: 400,
+            paddingRight: 20,
+          }}
+        >
           {products.map((e, index) => {
             return (
               <View
@@ -52,18 +88,25 @@ export const PopularNearby = ({products}:any) => {
                 }}
                 key={index}
               >
-                <Link
-                href={`product/${e._id}`}
-                key={index}
-        
-              >
-                <Image
-                  style={{ width: 232, height: 195, borderRadius: 20 }}
-                  source={{ uri: "https://cdn.pixabay.com/photo/2023/08/18/15/02/dog-8198719_640.jpg" }}
-                />
+                <Link href={`product/${e._id}`} key={index}>
+                  <Image
+                    style={{ width: 232, height: 195, borderRadius: 20 }}
+                    source={{
+                      uri: e.imageUrl,
+                    }}
+                  />
                 </Link>
-                  <View style={{ width: 210, height:40, flexDirection: "row", justifyContent:"space-between" ,alignItems:"center" ,marginTop:15 }}>
-                    <View style={{gap:4}}>
+                <View
+                  style={{
+                    width: 210,
+                    height: 40,
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginTop: 15,
+                  }}
+                >
+                  <View style={{ gap: 4 }}>
                     <Text
                       style={{
                         fontSize: 14,
@@ -73,15 +116,46 @@ export const PopularNearby = ({products}:any) => {
                     >
                       {e.name}
                     </Text>
-                    <View style={{flexDirection:"row" , gap:2 ,alignItems:"center"}}>
-                     <Ionicons name="location"/>
-                    <Text style={{fontWeight:"300",fontSize:10,lineHeight:15}}>{e.location}</Text>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        gap: 2,
+                        alignItems: "center",
+                      }}
+                    >
+                      <Ionicons name="location" />
+                      <Text
+                        style={{
+                          fontWeight: "300",
+                          fontSize: 10,
+                          lineHeight: 15,
+                        }}
+                      >
+                        {e.location}
+                      </Text>
                     </View>
-                    </View>
-                    <View style={{width:40 ,height:20, marginRight:-10 ,flexDirection:"row", gap:2,alignItems:"center"}}>
+                  </View>
+                  <View
+                    style={{
+                      width: 40,
+                      height: 20,
+                      marginRight: -10,
+                      flexDirection: "row",
+                      gap: 2,
+                      alignItems: "center",
+                    }}
+                  >
                     <Ionicons name="star" color="#FFC300" />
-                     <Text style={{lineHeight:18,fontWeight:"400",fontSize:12}}>{e.rating}</Text>
-                    </View>
+                    <Text
+                      style={{
+                        lineHeight: 18,
+                        fontWeight: "400",
+                        fontSize: 12,
+                      }}
+                    >
+                      {e.rating}
+                    </Text>
+                  </View>
                   <View></View>
                 </View>
               </View>
