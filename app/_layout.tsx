@@ -3,7 +3,8 @@ import { useFonts } from "expo-font";
 import { Stack, useLocalSearchParams } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
-
+// import TokenProvider from "../context/tokenProvider";
+import TokenProvider from "../context/tokenProvider";
 import ApolloProviders from "../context/ApolloProvider";
 import ProductProvider from "../context/AllProductProvider";
 export default function RootLayout() {
@@ -12,14 +13,19 @@ export default function RootLayout() {
 
   return (
     <ApolloProviders>
-      <ProductProvider>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="login" options={{ headerShown: false }} />
-          <Stack.Screen name="product/[id]" options={{ headerShown: false }} />
-          <Stack.Screen name="+not-found" />
-        </Stack>
-      </ProductProvider>
+      <TokenProvider>
+        <ProductProvider>
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="login" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="product/[id]"
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen name="+not-found" />
+          </Stack>
+        </ProductProvider>
+      </TokenProvider>
     </ApolloProviders>
   );
 }

@@ -1,19 +1,32 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  ImageBackground,
-  StyleSheet,
-  Pressable,
-} from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { useGet1ProductQuery } from "@/generated";
 import { Ionicons } from "@expo/vector-icons";
 import { Link } from "expo-router";
-
+import { ProductImage } from "../_components/ProductImage";
+// import { SafeAreaView } from "react-native";
+// import { AdvancedImage } from "cloudinary-react-native";
+// import { thumbnail } from "@cloudinary/url-gen/actions/resize";
+// import { byRadius } from "@cloudinary/url-gen/actions/roundCorners";
+// import { focusOn } from "@cloudinary/url-gen/qualifiers/gravity";
+// import { Cloudinary } from "@cloudinary/url-gen";
+// import { FocusOn } from "@cloudinary/url-gen/qualifiers/focusOn";
+// import { ProductImage } from "../_components/ProductImage";
+// const cld = new Cloudinary({
+//   cloud: {
+//     cloudName: "demo",
+//   },
+// });
 const DetailProduct = () => {
   const { id } = useLocalSearchParams();
   const [ticketQuantity, setTicketQuantity] = useState<number>(1);
+  // const myImage = cld.image("front_face");
+  // // Apply the transformation.
+  // myImage
+  //   .resize(thumbnail().width(150).height(150).gravity(focusOn(FocusOn.face()))) // Crop the image, focusing on the face.
+  //   .roundCorners(byRadius(20)); // Round the corners.
+
   if (!id || (Array.isArray(id) && id.length === 0)) {
     return <Text>No valid id parameter found</Text>;
   }
@@ -44,84 +57,11 @@ const DetailProduct = () => {
             alignItems: "center",
           }}
         >
-          <ImageBackground
-            source={{ uri: data?.get1Product?.imageUrl }}
-            style={styles.imageBackground}
-            resizeMode="cover"
-          >
-            <View
-              style={{
-                width: 360,
-                height: 80,
-                flexDirection: "row",
-                justifyContent: "space-between",
-              }}
-            >
-              <Link href={`(tabs)`}>
-                <Pressable style={styles.backAndwishListButton}>
-                  <Ionicons name="arrow-back" size={20} />
-                </Pressable>
-              </Link>
-              <Pressable style={styles.backAndwishListButton}>
-                <Ionicons name="heart" size={20} />
-              </Pressable>
-            </View>
-            <View
-              style={{
-                width: 360,
-                height: 80,
-                flexDirection: "row",
-                justifyContent: "space-between",
-              }}
-            >
-              <View>
-                <Text style={styles.name}>{data?.get1Product?.name}</Text>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    gap: 10,
-                  }}
-                >
-                  <Ionicons name="location" color={"white"} />
-                  <Text style={styles.location}>
-                    {data?.get1Product?.location}
-                  </Text>
-                </View>
-              </View>
-              <View
-                style={{
-                  borderWidth: 2,
-                  width: 84,
-                  height: 84,
-                  borderColor: "rgba(0, 0, 0, 0.5)",
-                  borderRadius: 10,
-                  overflow: "hidden",
-                }}
-              >
-                <ImageBackground
-                  source={{ uri: data?.get1Product?.imageUrl }}
-                  style={{
-                    width: 80,
-                    height: 80,
-                    borderRadius: 10,
-                  }}
-                >
-                  <View
-                    style={{
-                      justifyContent: "center",
-                      alignItems: "center",
-                      width: "100%",
-                      height: "100%",
-                      backgroundColor: "rgba(0, 0, 0, 0.4)",
-                    }}
-                  >
-                    <Text style={{ color: "white" }}>+5</Text>
-                  </View>
-                </ImageBackground>
-              </View>
-            </View>
-          </ImageBackground>
+          <ProductImage
+            name={data?.get1Product?.name}
+            location={data?.get1Product?.location}
+            url={data?.get1Product?.imageUrl}
+          />
           <View
             style={{
               width: 350,
@@ -211,6 +151,12 @@ const DetailProduct = () => {
               </View>
             </View>
           </View>
+          {/* <SafeAreaView style={{ flex: 1, justifyContent: "center" }}>
+            <AdvancedImage
+              cldImg={myImage}
+              style={{ width: 200, height: 200, alignSelf: "center" }}
+            />
+          </SafeAreaView> */}
         </View>
       )}
       {/* <View style={styles.bookNow}> </View> */}
@@ -222,16 +168,6 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
     padding: 12,
-  },
-  imageBackground: {
-    width: 400,
-    height: 500,
-    borderRadius: 30,
-    overflow: "hidden",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingVertical: 20,
   },
   contentContainer: {
     flex: 1,
@@ -250,18 +186,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "white",
     textAlign: "center",
-  },
-  name: {
-    fontWeight: "600",
-    fontSize: 24,
-    lineHeight: 36,
-    color: "white",
-  },
-  location: {
-    fontWeight: "400",
-    fontSize: 14,
-    lineHeight: 21,
-    color: "white",
   },
   headText: {
     color: "#959595",
@@ -312,14 +236,6 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     borderWidth: 1,
     padding: 6,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  backAndwishListButton: {
-    width: 44,
-    height: 44,
-    borderRadius: 100,
-    backgroundColor: "#F9F9F9",
     justifyContent: "center",
     alignItems: "center",
   },
