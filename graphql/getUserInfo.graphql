@@ -1,0 +1,14 @@
+query GetUserInfo($input: userTokenInput!) {
+  getUserInfo(input: $input) {
+    email
+    name
+    emergencyPhone
+    currency
+    favorates
+    gender
+    profileImageUrl
+    point
+    phoneNumber
+    payment
+  }
+}

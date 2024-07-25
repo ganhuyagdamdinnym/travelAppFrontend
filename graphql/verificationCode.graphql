@@ -1,0 +1,3 @@
+mutation VerificationCode($input: verificationCodeInput!) {
+  verificationCode(input: $input)
+}

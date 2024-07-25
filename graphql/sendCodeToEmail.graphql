@@ -1,0 +1,3 @@
+mutation SendCodeToEmail($input: emailForSendingVerificationOTPInput!) {
+  sendCodeToEmail(input: $input)
+}

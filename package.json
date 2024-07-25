@@ -27,6 +27,7 @@
     "@graphql-codegen/typescript-react-query": "^6.1.0",
     "@react-native-async-storage/async-storage": "^1.24.0",
     "@react-navigation/native": "^6.0.2",
+    "@react-navigation/stack": "^6.4.1",
     "cloudinary-react-native": "^1.0.0",
     "D": "^1.0.0",
     "expo": "~51.0.14",

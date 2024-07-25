@@ -1,17 +1,31 @@
 import { View, Text, TextInput, Pressable } from "react-native";
 import { LoginStyle } from "../styles/loginStyles";
-
+import { useSendCodeToEmailMutation } from "@/generated";
 type Props = {
   emailForSendingOTP: string;
   setEmailForSendingOTP: React.Dispatch<React.SetStateAction<string>>;
   setIsClickSendButton: React.Dispatch<React.SetStateAction<boolean>>;
 };
-
 export const ForgotPassword = (props: Props) => {
+  const [handlerSendCode, { data }] = useSendCodeToEmailMutation();
   const { setIsClickSendButton, emailForSendingOTP, setEmailForSendingOTP } =
     props;
   const onChangeEmailForSendingOTP = (emailForSendingOTP: string) => {
     setEmailForSendingOTP(emailForSendingOTP);
+  };
+  const handlerSendButton = () => {
+    const handlerSendCodeInput = {
+      email: emailForSendingOTP,
+    };
+    try {
+      const res = handlerSendCode({
+        variables: { input: handlerSendCodeInput },
+      });
+      console.log(res);
+    } catch (err) {
+      console.log(err);
+    }
+    setIsClickSendButton(true);
   };
   return (
     <View style={LoginStyle.LoginContainer}>
@@ -30,13 +44,8 @@ export const ForgotPassword = (props: Props) => {
           style={LoginStyle.Input}
         />
       </View>
-      <Pressable style={LoginStyle.button}>
-        <Text
-          onPress={() => setIsClickSendButton(true)}
-          style={LoginStyle.buttonText}
-        >
-          Send
-        </Text>
+      <Pressable onPress={() => handlerSendButton()} style={LoginStyle.button}>
+        <Text style={LoginStyle.buttonText}>Send</Text>
       </Pressable>
     </View>
   );

@@ -37,10 +37,7 @@ const Login = () => {
             <Text style={{ color: "white", fontWeight: "700" }}>Back</Text>
           </Pressable>
           {isClickSendButton ? (
-            <VerificationCode
-              emailForSendingOTP={emailForSendingOTP}
-              setEmailForSendingOTP={setEmailForSendingOTP}
-            />
+            <VerificationCode emailForSendingOTP={emailForSendingOTP} />
           ) : (
             <ForgotPassword
               emailForSendingOTP={emailForSendingOTP}

@@ -1,0 +1,3 @@
+mutation AddPayment($input: bankNameInput) {
+  addPayment(input: $input)
+}
