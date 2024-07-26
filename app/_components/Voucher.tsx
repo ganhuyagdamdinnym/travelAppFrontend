@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
   container: {
     width: "90%",
     maxWidth: 370,
+    backgroundColor: "#F9F9F9",
     shadowOpacity: 0.25,
     shadowRadius: 3,
     elevation: 5,
@@ -60,7 +61,7 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   enterCodePartContainer: {
-    width: 330,
+    width: "100%",
     height: 130,
     borderWidth: 1,
     borderRadius: 10,
@@ -69,7 +70,7 @@ const styles = StyleSheet.create({
     gap: 15,
   },
   userPointContainer: {
-    width: 330,
+    width: "100%",
     height: 80,
     borderWidth: 1,
     borderRadius: 10,

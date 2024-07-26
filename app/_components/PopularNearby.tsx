@@ -1,8 +1,8 @@
-import { View, Text, Image, ScrollView } from "react-native";
-import { useProduct } from "../../context/AllProductProvider";
+import { View, Text, Image, ScrollView, StyleSheet } from "react-native";
 import { Link } from "expo-router";
-// import { Linking } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import { useProduct } from "../../context/AllProductProvider";
+
 import { useGetAllTravelQuery } from "@/generated";
 type RunDown = {
   title: string;
@@ -31,138 +31,128 @@ type ProductType = {
 
 export const PopularNearby = ({ products }: { products: ProductType[] }) => {
   if (!products || products.length < 1) {
-    console.log(products);
     return (
-      <View>
+      <View style={styles.container}>
         <Text>Loading</Text>
-        <Text>{products.toLocaleString()}</Text>
       </View>
     );
   }
+
   return (
-    <View style={{ width: "100%", height: 330, marginLeft: 40 }}>
-      <View
-        style={{
-          width: "90%",
-          height: 30,
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <Text
-          style={{
-            fontSize: 20,
-            fontWeight: "600",
-            lineHeight: 30,
-            color: "black",
-          }}
-        >
-          Popular Nearby
-        </Text>
-        <Text style={{ lineHeight: 18, fontSize: 12, fontWeight: "500" }}>
-          See all
-        </Text>
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.title}>Popular Nearby</Text>
+        <Text style={styles.seeAll}>See all</Text>
       </View>
-      <ScrollView horizontal={true}>
-        <View
-          style={{
-            flexDirection: "row",
-            gap: 20,
-            width: 400,
-            paddingRight: 20,
-          }}
-        >
-          {products.map((e, index) => {
-            return (
-              <View
-                style={{
-                  width: 240,
-                  height: 280,
-                  borderWidth: 1,
-                  borderRadius: 20,
-                  borderColor: "#AFAFAF",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  paddingTop: 4,
-                }}
-                key={index}
-              >
-                <Link href={`product/${e._id}`} key={index}>
-                  <Image
-                    style={{ width: 232, height: 195, borderRadius: 20 }}
-                    source={{
-                      uri: e.imageUrl,
-                    }}
-                  />
-                </Link>
-                <View
-                  style={{
-                    width: 210,
-                    height: 40,
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    marginTop: 15,
-                  }}
-                >
-                  <View style={{ gap: 4 }}>
-                    <Text
-                      style={{
-                        fontSize: 14,
-                        lineHeight: 21,
-                        fontWeight: "500",
-                      }}
-                    >
-                      {e.name}
-                    </Text>
-                    <View
-                      style={{
-                        flexDirection: "row",
-                        gap: 2,
-                        alignItems: "center",
-                      }}
-                    >
-                      <Ionicons name="location" />
-                      <Text
-                        style={{
-                          fontWeight: "300",
-                          fontSize: 10,
-                          lineHeight: 15,
-                        }}
-                      >
-                        {e.location}
-                      </Text>
-                    </View>
-                  </View>
-                  <View
-                    style={{
-                      width: 40,
-                      height: 20,
-                      marginRight: -10,
-                      flexDirection: "row",
-                      gap: 2,
-                      alignItems: "center",
-                    }}
-                  >
-                    <Ionicons name="star" color="#FFC300" />
-                    <Text
-                      style={{
-                        lineHeight: 18,
-                        fontWeight: "400",
-                        fontSize: 12,
-                      }}
-                    >
-                      {e.rating}
-                    </Text>
-                  </View>
-                  <View></View>
+      <ScrollView
+        horizontal={true}
+        contentContainerStyle={styles.scrollViewContent}
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+      >
+        {products.map((e, index) => (
+          <View style={styles.card} key={index}>
+            <Link href={`product/${e._id}`}>
+              <View style={{ width: 232, height: 195 }}>
+                <Image style={styles.image} source={{ uri: e.imageUrl }} />
+              </View>
+            </Link>
+            <View style={styles.info}>
+              <View style={styles.textContainer}>
+                <Text style={styles.productName}>{e.name}</Text>
+                <View style={styles.locationContainer}>
+                  <Ionicons name="location" />
+                  <Text style={styles.location}>{e.location}</Text>
                 </View>
               </View>
-            );
-          })}
-        </View>
+              <View style={styles.ratingContainer}>
+                <Ionicons name="star" color="#FFC300" />
+                <Text style={styles.rating}>{e.rating}</Text>
+              </View>
+            </View>
+          </View>
+        ))}
       </ScrollView>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    width: "100%",
+    height: 330,
+    marginLeft: 40,
+    paddingRight: 30,
+  },
+  header: {
+    width: "90%",
+    height: 30,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: "600",
+    color: "black",
+  },
+  seeAll: {
+    lineHeight: 18,
+    fontSize: 12,
+    fontWeight: "500",
+  },
+  scrollViewContent: {
+    flexDirection: "row",
+  },
+  card: {
+    width: 240,
+    height: 280,
+    borderWidth: 1,
+    borderRadius: 20,
+    borderColor: "#AFAFAF",
+    flexDirection: "column",
+    alignItems: "center",
+    paddingTop: 4,
+    marginRight: 20,
+  },
+  image: {
+    width: 232,
+    height: 195,
+    borderRadius: 20,
+  },
+  info: {
+    width: 210,
+    height: 40,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginTop: 15,
+  },
+  textContainer: {
+    gap: 4,
+  },
+  productName: {
+    fontSize: 14,
+    fontWeight: "500",
+  },
+  locationContainer: {
+    flexDirection: "row",
+    gap: 2,
+    alignItems: "center",
+  },
+  location: {
+    fontWeight: "300",
+    fontSize: 10,
+  },
+  ratingContainer: {
+    width: 40,
+    height: 20,
+    flexDirection: "row",
+    gap: 2,
+    alignItems: "center",
+  },
+  rating: {
+    fontSize: 12,
+    fontWeight: "400",
+  },
+});

@@ -2,17 +2,28 @@ import { View, Text, ScrollView } from "react-native";
 import { PaymentHeader } from "./_components/PaymentHeader";
 import { PaySoon } from "./_components/PaySoon";
 import { PaymentMethod } from "./_components/PaymentMethod";
-import { useGlobalSearchParams, useLocalSearchParams } from "expo-router";
+import { useCreateOrderMutation } from "@/generated";
+import {
+  router,
+  useGlobalSearchParams,
+  useLocalSearchParams,
+} from "expo-router";
 import { Voucher } from "./_components/Voucher";
 import { useEffect, useState } from "react";
 import { Transfer } from "./_components/Transfer";
 import { useGet1ProductQuery } from "@/generated";
 import { Pressable } from "react-native";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useUserInfo } from "@/context/UserInfoProvider";
 const payment = () => {
+  const [createOrder, {}] = useCreateOrderMutation();
+  const { user } = useUserInfo();
+  const [ticketQuantity, setTicketQuantity] = useState<number>(0);
   const [paymentStatus, setPaymentStatus] = useState<string>("PaymentMethod");
   const [payBank, setPayBank] = useState<string | null>(null);
-
+  const [allPrice, setAllPrice] = useState<number>(0);
+  const [addVoucherPoint, setAddVoucherPoint] = useState<number>(0);
+  const [couponCode, setCouponCode] = useState<string>("");
   const { id } = useGlobalSearchParams();
   if (!id || (Array.isArray(id) && id.length === 0)) {
     return <Text>No valid id parameter found</Text>;
@@ -35,7 +46,33 @@ const payment = () => {
       }
     }
   };
+  const handlerAsyncStorage = async () => {
+    const ticketQuantity = await AsyncStorage.getItem("ticketQuantity");
+    if (ticketQuantity && data?.get1Product?.price) {
+      setAllPrice(data?.get1Product?.price * parseFloat(ticketQuantity));
+      setTicketQuantity(parseFloat(ticketQuantity));
+    } else {
+      router.replace("/");
+    }
+  };
+  const handlerPay = () => {
+    const createOrderInput = {
+      userEmail: user?.email,
+      ticketQuantity: ticketQuantity,
+      couponCode: couponCode,
+    };
 
+    createOrder({
+      variables: { input: createOrderInput },
+    });
+  };
+
+  useEffect(() => {
+    handlerAsyncStorage();
+  }, []);
+  useEffect(() => {
+    setAddVoucherPoint(allPrice * 10);
+  }, [allPrice]);
   return (
     <View
       style={{
@@ -46,7 +83,11 @@ const payment = () => {
         paddingBottom: 10,
       }}
     >
-      <PaymentHeader id={id} paymentStatus={paymentStatus} />
+      <PaymentHeader
+        id={id}
+        paymentStatus={paymentStatus}
+        setPaymentStatus={setPaymentStatus}
+      />
       <ScrollView
         style={{ width: "100%", height: "100%" }}
         showsVerticalScrollIndicator={false}
@@ -66,7 +107,7 @@ const payment = () => {
           {paymentStatus == "PaymentMethod" ? (
             <PaymentMethod payBank={payBank} setPayBank={setPayBank} />
           ) : paymentStatus == "Transfer" ? (
-            <Transfer payBank={payBank} />
+            <Transfer payBank={payBank} allPrice={allPrice} />
           ) : null}
           {paymentStatus == "PaymentMethod" ? (
             <Voucher />
@@ -117,8 +158,16 @@ const payment = () => {
               }}
             >
               <View>
-                <Text></Text>
-                <Text></Text>
+                <Text
+                  style={{ fontWeight: "500", fontSize: 28, lineHeight: 42 }}
+                >
+                  ${allPrice}
+                </Text>
+                <Text
+                  style={{ fontWeight: "300", fontSize: 10, lineHeight: 15 }}
+                >
+                  Will get + {addVoucherPoint} point
+                </Text>
               </View>
               <Pressable
                 style={{
@@ -129,6 +178,7 @@ const payment = () => {
                   justifyContent: "center",
                   alignItems: "center",
                 }}
+                onPress={() => handlerPay()}
               >
                 <Text
                   style={{

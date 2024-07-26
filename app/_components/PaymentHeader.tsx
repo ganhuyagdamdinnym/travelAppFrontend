@@ -1,14 +1,16 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import { Link } from "expo-router";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { Dispatch, SetStateAction } from "react";
 
 type Props = {
   id: string | string[] | undefined;
   paymentStatus: string;
+  setPaymentStatus: Dispatch<SetStateAction<string>>;
 };
 
 export const PaymentHeader = (props: Props) => {
-  const { id, paymentStatus } = props;
+  const { id, paymentStatus, setPaymentStatus } = props;
   return (
     <View style={styles.container}>
       <View
@@ -32,13 +34,14 @@ export const PaymentHeader = (props: Props) => {
         style={{ marginTop: 20, marginLeft: 70, flexDirection: "row", gap: 14 }}
       >
         <View style={styles.methodsContainer}>
-          <View
+          <Pressable
             style={
               paymentStatus === "PaymentMethod" ? styles.round2 : styles.round
             }
+            onPress={() => setPaymentStatus("PaymentMethod")}
           >
             <Text style={styles.number}>1</Text>
-          </View>
+          </Pressable>
           <Text style={styles.text}>Payment Method</Text>
         </View>
         <View style={styles.methodsContainer}>

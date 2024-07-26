@@ -4,7 +4,6 @@ export const homeStyle = StyleSheet.create({
   bodyProvider: {
     width: "100%",
     height: "100%",
-    marginTop: 25,
     flexDirection: "column",
     alignItems: "center",
   },

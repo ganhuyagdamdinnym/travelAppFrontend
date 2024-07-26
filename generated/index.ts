@@ -189,7 +189,8 @@ export type ChangePasswordInput = {
 export type CreateOrderInput = {
   couponCode?: InputMaybe<Scalars['String']['input']>;
   createdAt?: InputMaybe<Scalars['String']['input']>;
-  userId: Scalars['String']['input'];
+  ticketQuantity?: InputMaybe<Scalars['Int']['input']>;
+  userEmail?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type EmailForSendingVerificationOtpInput = {

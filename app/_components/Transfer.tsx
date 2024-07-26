@@ -2,14 +2,20 @@ import { View, Text, StyleSheet } from "react-native";
 import { bankInfo } from "@/utils/bankInfo";
 
 import Feather from "@expo/vector-icons/Feather";
+import { useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { router } from "expo-router";
 
 type Props = {
   payBank: string | null;
+  allPrice: number;
 };
 type BankName = "Хаан банк" | "Төрийн банк" | "ХХ банк";
 
 export const Transfer = (props: Props) => {
-  const { payBank } = props;
+  const { payBank, allPrice } = props;
+  //const [price, setPrice] = useState<number>(0);
+
   return (
     <View style={styles.container}>
       <Text style={{ fontWeight: "500", fontSize: 16, lineHeight: 24 }}>
@@ -83,6 +89,7 @@ export const Transfer = (props: Props) => {
           borderRadius: 10,
           borderColor: "#959595",
           marginTop: 15,
+          backgroundColor: "#F9F9F9",
           justifyContent: "center",
           paddingLeft: 20,
           shadowOpacity: 0.25,
@@ -91,7 +98,7 @@ export const Transfer = (props: Props) => {
         }}
       >
         <Text style={{ fontWeight: "600", fontSize: 20, lineHeight: 30 }}>
-          $80
+          ${allPrice}
         </Text>
       </View>
     </View>
@@ -101,6 +108,7 @@ export const Transfer = (props: Props) => {
 const styles = StyleSheet.create({
   container: {
     width: "90%",
+    backgroundColor: "#F9F9F9",
     maxWidth: 370,
     shadowOpacity: 0.25,
     shadowRadius: 3,

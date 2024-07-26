@@ -46,7 +46,7 @@ export const ProductImage = (props: Props) => {
           justifyContent: "space-between",
         }}
       >
-        <Link href={`(tabs)`}>
+        <Link href={`/`}>
           <Pressable style={styles.backAndwishListButton}>
             <Ionicons name="arrow-back" size={20} />
           </Pressable>
@@ -114,8 +114,10 @@ export const ProductImage = (props: Props) => {
 
 const styles = StyleSheet.create({
   imageBackground: {
-    width: 400,
+    width: "100%",
+    maxWidth: 400,
     height: 500,
+
     borderRadius: 30,
     overflow: "hidden",
     flexDirection: "column",

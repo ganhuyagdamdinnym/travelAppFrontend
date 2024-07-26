@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, ScrollView } from "react-native";
 //import { UserHead } from "../_components/userProfile/UserHead";
 import { Order } from "../_components/userProfile/Order";
 import { UserPaymentMethod } from "../_components/userProfile/UserPaymentMethod";
@@ -21,7 +21,7 @@ export default function UserHome({ navigation }: { navigation: any }) {
         <UserPaymentMethod handlerPushToPayment={handlerPushToPayment} />
         <UserCouponAndVoucher />
         <SupportCenter />
-        <Settings />s
+        <Settings />
       </View>
     </View>
   );

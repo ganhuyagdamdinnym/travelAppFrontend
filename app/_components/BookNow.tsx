@@ -1,13 +1,19 @@
 import { router } from "expo-router";
 import { View, Text, StyleSheet, Pressable } from "react-native";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 type Props = {
   ticketPrice: number;
   productId: string | undefined;
+  ticketQuantity: number;
 };
 
 export const BookNow = (props: Props) => {
-  const { ticketPrice, productId } = props;
+  const { ticketPrice, productId, ticketQuantity } = props;
+  const handlerJumptoPayment = async () => {
+    await AsyncStorage.setItem("ticketQuantity", ticketQuantity.toString());
+
+    router.replace(`/payment/?id=${productId}`);
+  };
   return (
     <View style={styles.bookNow}>
       <View style={{ flexDirection: "row", alignItems: "baseline" }}>
@@ -32,10 +38,7 @@ export const BookNow = (props: Props) => {
           /pax
         </Text>
       </View>
-      <Pressable
-        onPress={() => router.replace(`/payment/?id=${productId}`)}
-        style={styles.button}
-      >
+      <Pressable onPress={handlerJumptoPayment} style={styles.button}>
         <Text style={styles.text}>Book Now</Text>
       </Pressable>
     </View>
@@ -52,6 +55,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     gap: 25,
+    paddingBottom: 17,
   },
   button: {
     width: 170,

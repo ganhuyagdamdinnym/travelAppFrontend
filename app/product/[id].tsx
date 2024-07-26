@@ -14,6 +14,7 @@ const DetailProduct = () => {
   const { id } = useLocalSearchParams();
   const [ticketQuantity, setTicketQuantity] = useState<number>(1);
   const [ticketPrice, setTicketPrice] = useState<number>(0);
+  const [firstPrice, setFirstPrice] = useState<number>(0);
   const [infoStatus, setInfoStatus] = useState<string>("");
 
   if (!id || (Array.isArray(id) && id.length === 0)) {
@@ -34,12 +35,19 @@ const DetailProduct = () => {
     if (data?.get1Product?.price) {
       setTicketPrice(data?.get1Product?.price);
       console.log("djio", data?.get1Product?.price);
+      setFirstPrice(data?.get1Product?.price);
     }
   };
 
   const handlerBack = () => {
     setInfoStatus("");
   };
+  const handlerAddTicket = () => {
+    setTicketQuantity(ticketQuantity + 1);
+
+    setTicketPrice(firstPrice * (ticketQuantity + 1));
+  };
+
   useEffect(() => {
     handlerPrice();
   }, [data]);
@@ -59,6 +67,8 @@ const DetailProduct = () => {
               flexDirection: "column",
               width: "100%",
               alignItems: "center",
+              paddingLeft: 5,
+              paddingRight: 5,
             }}
           >
             <ProductImage
@@ -148,19 +158,16 @@ const DetailProduct = () => {
                     }}
                     style={styles.plusAndMinusButton}
                   >
-                    -
+                    <Text style={{ fontSize: 15 }}>-</Text>
                   </Pressable>
                   <Text style={{ fontSize: 20, lineHeight: 26 }}>
                     {ticketQuantity}
                   </Text>
                   <Pressable
-                    onPress={() => {
-                      setTicketQuantity(ticketQuantity + 1);
-                      setTicketPrice(ticketPrice * ticketQuantity);
-                    }}
+                    onPress={handlerAddTicket}
                     style={styles.plusAndMinusButton}
                   >
-                    +
+                    <Text style={{ fontSize: 15 }}>+</Text>
                   </Pressable>
                 </View>
               </View>
@@ -169,7 +176,11 @@ const DetailProduct = () => {
           </View>
         </ScrollView>
       )}
-      <BookNow ticketPrice={ticketPrice} productId={data?.get1Product?._id} />
+      <BookNow
+        ticketPrice={ticketPrice}
+        productId={data?.get1Product?._id}
+        ticketQuantity={ticketQuantity}
+      />
       {infoStatus == "information" ? (
         <Information
           information={data?.get1Product?.informations}
@@ -195,6 +206,7 @@ const styles = StyleSheet.create({
   container: {
     height: "100%",
     paddingTop: 12,
+    marginTop: 15,
   },
   contentContainer: {
     flex: 1,
@@ -241,7 +253,7 @@ const styles = StyleSheet.create({
     height: 24,
     borderRadius: 30,
     borderWidth: 1,
-    padding: 6,
+    flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
   },
